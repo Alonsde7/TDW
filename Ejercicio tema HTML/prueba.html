@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Formularios</title>
+  </head>
+  <body>
+    <!--- revisar porque falta type="range" y quizás más -->
+    <form action="http://www.blablabla.com/script.php">
+      <label for="campo1">Campo 1:</label>
+      <input id="campo1" type="text" name="campo1" value="texto por defecto" />
+      <br />
+      <label for="campo2">Campo 2:</label>
+      <input id="campo2" list="valores" name="campo2" />
+      <datalist id="valores">
+        <option value="Valor A"></option>
+        <option value="Valor B"></option>
+      </datalist>
+      <br />
+      <label for="campo3">Campo 3:</label>
+      <textarea id="campo3" rows="5" cols="50" name="campo3">
+texto por defecto</textarea
+      >
+      <br />
+      <label for="campo4">Campo 4:</label>
+      <input id="campo4" type="pasword" name="campo4" />
+      <br />
+      <label for="campo5">Campo 5:</label>
+      <input
+        id="campo5"
+        type="number"
+        value="0"
+        min="-10"
+        max="10"
+        name="campo5"
+      />
+      <br />
+      <label for="campo6">Campo 6:</label>
+      <input
+        id="campo6"
+        type="date"
+        min="1900-1-1"
+        max="2020-1-1"
+        name="campo6"
+      />
+      <br />
+      <label for="campo7">Campo 7:</label>
+      <input id="campo7" type="time" name="campo7" />
+      <br />
+      <label for="campo8">Campo 8:</label>
+      <input id="campo8" type="datetime-local" name="campo8" />
+      <br />
+      <label for="campo9">Campo 9:</label>
+      <input id="campo9" type="month" name="campo9" />
+      <br />
+      <label for="campo10">Campo 10:</label>
+      <input id="campo10" type="week" name="campo10" />
+      <br />
+      <label for="campo11">Campo 11:</label>
+      <input id="campo11" type="tel" name="campo11" />
+      <br />
+      <label for="campo12">Campo 12:</label>
+      <input id="campo12" type="email" name="campo12" />
+      <br />
+      <label for="campo13">Campo 13:</label>
+      <input id="campo13" type="url" name="campo13" />
+      <br />
+      <label for="campo14">Campo 14:</label>
+      <input id="campo14" type="search" name="campo14" />
+      <br />
+      <label>Campo 15:</label>
+      <input type="radio" value="Opcion1" checked name="campo15" />Opción 1
+      <input type="radio" value="Opcion2" name="campo15" />Opción 2
+      <br />
+      <label for="campo16">Campo 16:</label>
+      <select size="3" multiple name="campo16">
+        <option value="Opcion1" selected>Opción 1</option>
+        <option value="Opcion2">Opcion 2</option>
+        <option value="Opcion3">Opcion 3</option>
+      </select>
+      <br />
+      <label for="campo17">Campo 17:</label>
+      <input id="campo17" type="checkbox" value="Opción" name="campo17" />Opción
+      <br />
+      <input type="button" name="accion" value="gestionar valores" />
+      <input type="submit" name="enviar" value="enviar valores" />
+      <input type="reset" name="borrar" value="borrar valores" />
+    </form>
+  </body>
+</html>
