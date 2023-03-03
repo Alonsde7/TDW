@@ -61,6 +61,7 @@ section {
     font-size: 200%;
     margin-left: 10%;
     float: left;
+    text-align: center;
 }
 
 section img {
@@ -77,13 +78,19 @@ iframe {
 }
 
 footer {
+    width: 80%;
     margin-top: 2%;
-    margin-right: 5%;
     margin-left: 10%;
+    margin-right: 10%;
     margin-bottom: 2%;
     float: left;
 } 
 
-footer.rightimages {
+footer img{
+    float: left;
+}
+
+img.rightimages {
+    margin-right: auto;
     float: right;
 }
