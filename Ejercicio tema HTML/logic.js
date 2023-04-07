@@ -5,11 +5,12 @@ function onLoad(event) {
 }
 
 function editItem(element) {
-    const padre = element.padre;
+    const padre = element.parentElement;
 }
 
 function deleteItem(element) {
-    const padre = element.padre;
+    console.log("Borrando");
+    element.parentElement.innerHTML = "<td></td>";
 }
 
 function newTech() {
@@ -35,7 +36,7 @@ function onLoging() {
 
         for (let elemento of table.getElementsByTagName("td")) {
             elemento.innerHTML += "<input type=\"button\" name=\"edit\" value=\"edit\" onclick=\"editItem(this)\">";
-            elemento.innerHTML += "<input type=\"button\" name=\"delete\" value=\"delete\" onclick=\"   deleteItem(this)\">";
+            elemento.innerHTML += "<input type=\"button\" name=\"delete\" value=\"delete\" onclick=\" deleteItem(this)\">";
         }
 
         const newRow = document.createElement("tr");
