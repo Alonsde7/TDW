@@ -25,6 +25,12 @@ function newComp() {
 
 }
 
+function newItem(){
+
+
+    
+}
+
 function onLoging() {
 
     if (localStorage.getItem(document.getElementById("user_form").value) == document.getElementById("password_form").value) {

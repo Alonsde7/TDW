@@ -15,14 +15,9 @@ header {
     font-size: 200%;
 }
 
-nav {
-    font-size: 150%;
-    text-align: start;
-    margin-left: 10%;
-
-}
-
 form {
+    font-size: 150%;
+    margin-left: 10%;
     text-align: start;
 }
 

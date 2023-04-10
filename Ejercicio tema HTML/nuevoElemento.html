@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <title>Anales de la Ciencia</title>
+    <meta charset="UTF-8">
+    <meta name="author" content="&Aacute;lvaro Alonso Devesa">
+    <meta name="keywords" content="Anales de la Ciencia">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script language="JavaScript" src="logic.js"></script>
+</head>
+
+<body onload="onLoad(event)">
+    <header>
+        <h1>Anales de la Ciencia</h1>
+    </header>
+    <main>
+        <form id="newElementForm" onsubmit="newItem()">
+            <label for="name_form">Nombre:</label>
+            <input id="name_form" type="text" name="name_form" required>
+            <label for="year_form">Año:</label>
+            <input id="year_form" type="date" name="year_form" required>
+            
+            <br>
+            <input type="submit" name="Guardar" value="Guardar">
+
+        </form>
+    </main>
+</body>
+
+</html>
