@@ -1,4 +1,6 @@
 let personas = [];
+let companies = [];
+
 
 function onLoad(event) {
     localStorage.setItem("x", "x");
@@ -78,7 +80,7 @@ function newFormCompany() {
     //En vez de un texto, se podia hacer un selector de personas
     FORM.innerHTML += "<br><label for=\"Addpersonas\">Nombre y Apellidos de la persona: </label><input id=\"Addpersonas\" type=\"text\" name=\"Addpersonas\"/>";
     FORM.innerHTML += "<input type=\"button\" name=\"Add personas\" value=\"Añadir\" onclick=\"addPersona()\"><br><ul></ul><br>";
-    FORM.innerHTML += "<input type=\"button\" name=\"crear Compañia\" value=\"crear Compañia\" onclick=\"newCompany()\">";
+    FORM.innerHTML += "<input type=\"button\" name=\"crear Compañia\" value=\"crear Compañia\" onclick=\"newFormCompany()\">";
 
 
 }
@@ -113,7 +115,7 @@ function newPerson() {
 
 }
 
-function newProduct() {
+function newFormProduct() {
 
     const MAINSTRUCTURE = document.getElementById("mainStructure");
     const FORM = document.createElement("form");
@@ -124,7 +126,41 @@ function newProduct() {
 
     newForm();
 
+    FORM.innerHTML += "<br><label for=\"Addpersonas\">Nombre y Apellidos de la persona: </label><input id=\"Addpersonas\" type=\"text\" name=\"Addpersonas\"/>";
+    FORM.innerHTML += "<input type=\"button\" name=\"Add personas\" value=\"Añadir\" onclick=\"addPersona()\"><br><ul></ul><br>";
 
+    FORM.innerHTML += "<br><label for=\"AddCompany\">Nombre de la compañia: </label><input id=\"AddCompany\" type=\"text\" name=\"AddCompany\"/>";
+    FORM.innerHTML += "<input type=\"button\" name=\"Add Compañia\" value=\"Añadir\" onclick=\"addCompany()\"><br><ul></ul><br>";
+
+
+    FORM.innerHTML += "<input type=\"button\" name=\"crear Producto\" value=\"crear Producto\" onclick=\"newProduct()\">";
+
+}
+
+function addCompany(){
+
+    companies[companies.length] = document.getElementById("AddCompany").value;
+    document.getElementsByTagName("ul")[1].innerHTML += `<li>${document.getElementById("AddCompany").value}</li>`;
+
+}
+
+function newProduct(){
+
+    const PRODUCT = {
+
+        nombre: document.getElementById("Name").value,
+        fechaNac: document.getElementById("BornDate").value,
+        fechaDef: document.getElementById("DeathDate").value,
+        imagePath: document.getElementById("ImagePath").value,
+        WikiPage: document.getElementById("WikiPage").value,
+        creadores: personas,
+        empresas: companies
+    }
+
+    document.getElementById("newItemForm").remove();
+    //TODO: FALTARIA MODIFICAR LOS VALORES DE LAS PERSONAS
+    //localStorage.setItem(PRODUCT['nombre'], JSON.stringify(PRODUCT));
+    //localStorage.setItem("listaProductos", localStorage.getItem("listaProductos") + PRODUCT['nombre']);
 
 }
 
