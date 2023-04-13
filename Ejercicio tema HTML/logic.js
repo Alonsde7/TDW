@@ -1,4 +1,4 @@
-let personas =[];
+let personas = [];
 
 function onLoad(event) {
     localStorage.setItem("x", "x");
@@ -13,24 +13,6 @@ function editItem(element) {
 function deleteItem(element) {
     console.log("Borrando");
     element.parentElement.innerHTML = "<td></td>";
-}
-
-function newTech() {
-
-}
-
-function newAuthor() {
-
-}
-
-function newComp() {
-
-}
-
-function newItem() {
-
-
-
 }
 
 function onLoging() {
@@ -79,7 +61,7 @@ function newFormPerson() {
 
     newForm();
 
-    FORM.innerHTML += "<input type=\"button\" name=\"Crear Persona\" value=\"crear ${buttonname}\" onclick=\"newPerson()\">";
+    FORM.innerHTML += "<input type=\"button\" name=\"Crear Persona\" value=\"crear Persona\" onclick=\"newPerson()\">";
 
 }
 
@@ -93,23 +75,23 @@ function newFormCompany() {
     personas = [];
 
     newForm();
-    FORM.innerHTML += "<label for=\"Addpersonas\">Nombre y Apellidos de la persona: </label><input id=\"Addpersonas\" type=\"text\" name=\"Addpersonas\"/>";
-    FORM.innerHTML += `<input type=\"button\" name=\"Add personas\" value=\"Añadir\" onclick=\"addPersona()\"><br>`;
-    FORM.innerHTML += `<input type=\"button\" name=\"crear Compañia\" value=\"crear Compañia\" onclick=\"newCompany()\">`;
+    //En vez de un texto, se podia hacer un selector de personas
+    FORM.innerHTML += "<br><label for=\"Addpersonas\">Nombre y Apellidos de la persona: </label><input id=\"Addpersonas\" type=\"text\" name=\"Addpersonas\"/>";
+    FORM.innerHTML += "<input type=\"button\" name=\"Add personas\" value=\"Añadir\" onclick=\"addPersona()\"><br><ul></ul><br>";
+    FORM.innerHTML += "<input type=\"button\" name=\"crear Compañia\" value=\"crear Compañia\" onclick=\"newCompany()\">";
 
 
 }
 
 function addPersona() {
 
-
     personas[personas.length] = document.getElementById("Addpersonas").value;
 
+    document.getElementsByTagName("ul")[0].innerHTML += `<li>${document.getElementById("Addpersonas").value}</li>`;
 
 }
 
 function newPerson() {
-
 
     const PERSONA = {
         nombre: document.getElementById("Name").value,
@@ -124,23 +106,44 @@ function newPerson() {
 
     document.getElementById("newItemForm").remove();
     //localStorage.setItem(PERSONA['nombre'], JSON.stringify(PERSONA));
+    //localStorage.setItem("listaPersonas", localStorage.getItem("listaPersonas") + PERSONA['nombre']);
 
     console.log(JSON.stringify(PERSONA));
     console.log(PERSONA['nombre']);
 
 }
 
-function newProduct() { }
+function newProduct() {
+
+    const MAINSTRUCTURE = document.getElementById("mainStructure");
+    const FORM = document.createElement("form");
+    FORM.setAttribute("id", "newItemForm");
+    MAINSTRUCTURE.appendChild(FORM);
+
+    personas = [];
+
+    newForm();
+
+
+
+}
 
 function newCompany() {
 
-    console.log(personas);
+    const COMPANY = {
+        nombre: document.getElementById("Name").value,
+        fechaNac: document.getElementById("BornDate").value,
+        fechaDef: document.getElementById("DeathDate").value,
+        imagePath: document.getElementById("ImagePath").value,
+        WikiPage: document.getElementById("WikiPage").value,
+        creadores: personas
+    };
 
-    //
+    document.getElementById("newItemForm").remove();
+    //TODO: FALTARIA MODIFICAR LOS VALORES DE LAS PERSONAS
+    //localStorage.setItem(COMPANY['nombre'], JSON.stringify(COMPANY));
+    //localStorage.setItem("listaCompany", localStorage.getItem("listaCompany") + COMPANY['nombre']);
 
-   personas = [];
-
-   document.getElementById("newItemForm").remove();
-
+    personas = [];
 
 }
