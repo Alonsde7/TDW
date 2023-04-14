@@ -8,12 +8,30 @@ function onLoad(event) {
     localStorage.setItem("z", "z");
 }
 
+function mostrarelementos(){
+
+    const TABLE = document.getElementById("mainTable");
+    const NEWROW = document.createElement("td");
+    TABLE.appendChild(NEWROW);
+}
+
 function editItem(element) {
     const padre = element.parentElement;
 }
 
 function deleteItem(element) {
-    console.log("Borrando");
+    
+    const NOMBRE = element.parentElement.getElementsByTagName("img").textContent;
+
+    for (var lista in ["listaCompany", "listaProductos", "listaPersonas"]) {
+        const ARRAY = JSON.parse(localStorage.getItem(lista) ?? []);
+        if (ARRAY.indexOf(NOMBRE) != -1) {
+            ARRAY.splice(ARRAY.indexOf(NOMBRE), 1);
+            localStorage.setItem(lista, ARRAY);
+        }
+    }
+
+    localStorage.deleteItem(NOMBRE);
     element.parentElement.innerHTML = "<td></td>";
 }
 
@@ -85,7 +103,7 @@ function newFormCompany() {
 
 function addPersona() {
 
-    personas[personas.length] = document.getElementById("Addpersonas").value;
+    personas.push(document.getElementById("Addpersonas").value);
 
     document.getElementsByTagName("ul")[0].innerHTML += `<li>${document.getElementById("Addpersonas").value}</li>`;
 
@@ -103,13 +121,11 @@ function newPerson() {
         referenciaE: 0
     };
 
-
     document.getElementById("newItemForm").innerHTML = "";
-    //localStorage.setItem(PERSONA['nombre'], JSON.stringify(PERSONA));
-    //localStorage.setItem("listaPersonas", localStorage.getItem("listaPersonas") + PERSONA['nombre']);
-
-    console.log(JSON.stringify(PERSONA));
-    console.log(PERSONA['nombre']);
+    localStorage.setItem(PERSONA['nombre'], JSON.stringify(PERSONA));
+    const ARRAYPERSONAS = JSON.parse(localStorage.getItem("listaPersonas")) ?? [];
+    ARRAYPERSONAS.push(PERSONA);
+    localStorage.setItem("listaPersonas", JSON.stringify(ARRAYPERSONAS));
 
 }
 
@@ -127,19 +143,18 @@ function newFormProduct() {
     FORM.innerHTML += "<br><label for=\"AddCompany\">Nombre de la compañia: </label><input id=\"AddCompany\" type=\"text\" name=\"AddCompany\"/>";
     FORM.innerHTML += "<input type=\"button\" name=\"Add Compañia\" value=\"Añadir\" onclick=\"addCompany()\"><br><ul></ul><br>";
 
-
     FORM.innerHTML += "<input type=\"button\" name=\"crear Producto\" value=\"crear Producto\" onclick=\"newProduct()\">";
 
 }
 
-function addCompany(){
+function addCompany() {
 
-    companies[companies.length] = document.getElementById("AddCompany").value;
+    companies.push(document.getElementById("AddCompany").value);
     document.getElementsByTagName("ul")[1].innerHTML += `<li>${document.getElementById("AddCompany").value}</li>`;
 
 }
 
-function newProduct(){
+function newProduct() {
 
     const PRODUCT = {
 
@@ -153,10 +168,12 @@ function newProduct(){
     }
 
     document.getElementById("newItemForm").innerHTML = "";
-        //TODO: FALTARIA MODIFICAR LOS VALORES DE LAS PERSONAS
-    //localStorage.setItem(PRODUCT['nombre'], JSON.stringify(PRODUCT));
-    //localStorage.setItem("listaProductos", localStorage.getItem("listaProductos") + PRODUCT['nombre']);
+    //TODO: FALTARIA MODIFICAR LOS VALORES DE LAS PERSONAS
+    localStorage.setItem(PRODUCT['nombre'], JSON.stringify(PRODUCT));
 
+    const ARRAYPRODUCTOS = JSON.parse(localStorage.getItem("listaPersonas")) ?? [];
+    ARRAYPRODUCTOS.push(PRODUCT);
+    localStorage.setItem("listaProductos", JSON.stringify(ARRAYPRODUCTOS));
 }
 
 function newCompany() {
@@ -172,9 +189,12 @@ function newCompany() {
 
     document.getElementById("newItemForm").innerHTML = "";
 
-        //TODO: FALTARIA MODIFICAR LOS VALORES DE LAS PERSONAS
-    //localStorage.setItem(COMPANY['nombre'], JSON.stringify(COMPANY));
-    //localStorage.setItem("listaCompany", localStorage.getItem("listaCompany") + COMPANY['nombre']);
+    //TODO: FALTARIA MODIFICAR LOS VALORES DE LAS PERSONAS
+    localStorage.setItem(COMPANY['nombre'], JSON.stringify(COMPANY));
+
+    const ARRAYCOMPANIES = JSON.parse(localStorage.getItem("listaCompany")) ?? [];
+    ARRAYCOMPANIES.push(COMPANY);
+    localStorage.setItem("listaCompany", JSON.stringify(ARRAYCOMPANIES));
 
     personas = [];
 
