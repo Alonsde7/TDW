@@ -34,10 +34,14 @@ function onLoging() {
         const NEWROW = document.createElement("tr");
         TABLE.appendChild(NEWROW);
 
-        NEWROW.innerHTML += "<td><form><input type=\"button\" name=\"nuevo producto\" value=\"nuevo producto\" onclick=\"newProduct()\"></form></td>"
-        NEWROW.innerHTML += "<td><form><input type=\"button\" name=\"nueva persona\" value=\"nueva persona\" onclick=\"newFormPerson()\"></form></td>"
-        NEWROW.innerHTML += "<td><form><input type=\"button\" name=\"nuevo entidad\" value=\"nueva entidad\" onclick=\"newFormCompany()\"></form></td>"
+        NEWROW.innerHTML += "<td><form><input id=\"botonNuevoProducto\" type=\"button\" name=\"nuevo producto\" value=\"nuevo producto\" onclick=\"newFormProduct()\"></form></td>"
+        NEWROW.innerHTML += "<td><form><input id=\"botonNuevaPersona\" type=\"button\" name=\"nueva persona\" value=\"nueva persona\" onclick=\"newFormPerson()\"></form></td>"
+        NEWROW.innerHTML += "<td><form><input id=\"botonNuevaEmpresa\" type=\"button\" name=\"nuevo entidad\" value=\"nueva entidad\" onclick=\"newFormCompany()\"></form></td>"
 
+        const MAINSTRUCTURE = document.getElementById("mainStructure");
+        const FORM = document.createElement("form");
+        FORM.setAttribute("id", "newItemForm");
+        MAINSTRUCTURE.appendChild(FORM);
     }
 }
 
@@ -55,13 +59,9 @@ function newForm() {
 
 function newFormPerson() {
 
-    const MAINSTRUCTURE = document.getElementById("mainStructure");
-
-    const FORM = document.createElement("form");
-    FORM.setAttribute("id", "newItemForm");
-    MAINSTRUCTURE.appendChild(FORM);
-
     newForm();
+
+    const FORM = document.getElementById("newItemForm");
 
     FORM.innerHTML += "<input type=\"button\" name=\"Crear Persona\" value=\"crear Persona\" onclick=\"newPerson()\">";
 
@@ -69,14 +69,12 @@ function newFormPerson() {
 
 function newFormCompany() {
 
-    const MAINSTRUCTURE = document.getElementById("mainStructure");
-    const FORM = document.createElement("form");
-    FORM.setAttribute("id", "newItemForm");
-    MAINSTRUCTURE.appendChild(FORM);
-
     personas = [];
 
     newForm();
+
+    const FORM = document.getElementById("newItemForm");
+
     //En vez de un texto, se podia hacer un selector de personas
     FORM.innerHTML += "<br><label for=\"Addpersonas\">Nombre y Apellidos de la persona: </label><input id=\"Addpersonas\" type=\"text\" name=\"Addpersonas\"/>";
     FORM.innerHTML += "<input type=\"button\" name=\"Add personas\" value=\"Añadir\" onclick=\"addPersona()\"><br><ul></ul><br>";
@@ -94,6 +92,9 @@ function addPersona() {
 }
 
 function newPerson() {
+
+    
+    document.getElementById("botonNuevaPersona").display = "initial";
 
     const PERSONA = {
         nombre: document.getElementById("Name").value,
@@ -117,14 +118,11 @@ function newPerson() {
 
 function newFormProduct() {
 
-    const MAINSTRUCTURE = document.getElementById("mainStructure");
-    const FORM = document.createElement("form");
-    FORM.setAttribute("id", "newItemForm");
-    MAINSTRUCTURE.appendChild(FORM);
-
     personas = [];
 
     newForm();
+
+    const FORM = document.getElementById("newItemForm");
 
     FORM.innerHTML += "<br><label for=\"Addpersonas\">Nombre y Apellidos de la persona: </label><input id=\"Addpersonas\" type=\"text\" name=\"Addpersonas\"/>";
     FORM.innerHTML += "<input type=\"button\" name=\"Add personas\" value=\"Añadir\" onclick=\"addPersona()\"><br><ul></ul><br>";
@@ -146,6 +144,8 @@ function addCompany(){
 
 function newProduct(){
 
+    document.getElementById("botonNuevoProducto").display = "initial";
+
     const PRODUCT = {
 
         nombre: document.getElementById("Name").value,
@@ -165,6 +165,8 @@ function newProduct(){
 }
 
 function newCompany() {
+
+    document.getElementById("botonNuevaEmpresa").display = "initial";
 
     const COMPANY = {
         nombre: document.getElementById("Name").value,
