@@ -78,7 +78,7 @@ function newFormCompany() {
     //En vez de un texto, se podia hacer un selector de personas
     FORM.innerHTML += "<br><label for=\"Addpersonas\">Nombre y Apellidos de la persona: </label><input id=\"Addpersonas\" type=\"text\" name=\"Addpersonas\"/>";
     FORM.innerHTML += "<input type=\"button\" name=\"Add personas\" value=\"Añadir\" onclick=\"addPersona()\"><br><ul></ul><br>";
-    FORM.innerHTML += "<input type=\"button\" name=\"crear Compañia\" value=\"crear Compañia\" onclick=\"newFormCompany()\">";
+    FORM.innerHTML += "<input type=\"button\" name=\"crear Compañia\" value=\"crear Compañia\" onclick=\"newCompany()\">";
 
 
 }
@@ -93,9 +93,6 @@ function addPersona() {
 
 function newPerson() {
 
-    
-    document.getElementById("botonNuevaPersona").display = "initial";
-
     const PERSONA = {
         nombre: document.getElementById("Name").value,
         fechaNac: document.getElementById("BornDate").value,
@@ -107,7 +104,7 @@ function newPerson() {
     };
 
 
-    document.getElementById("newItemForm").remove();
+    document.getElementById("newItemForm").innerHTML = "";
     //localStorage.setItem(PERSONA['nombre'], JSON.stringify(PERSONA));
     //localStorage.setItem("listaPersonas", localStorage.getItem("listaPersonas") + PERSONA['nombre']);
 
@@ -144,8 +141,6 @@ function addCompany(){
 
 function newProduct(){
 
-    document.getElementById("botonNuevoProducto").display = "initial";
-
     const PRODUCT = {
 
         nombre: document.getElementById("Name").value,
@@ -157,16 +152,14 @@ function newProduct(){
         empresas: companies
     }
 
-    document.getElementById("newItemForm").remove();
-    //TODO: FALTARIA MODIFICAR LOS VALORES DE LAS PERSONAS
+    document.getElementById("newItemForm").innerHTML = "";
+        //TODO: FALTARIA MODIFICAR LOS VALORES DE LAS PERSONAS
     //localStorage.setItem(PRODUCT['nombre'], JSON.stringify(PRODUCT));
     //localStorage.setItem("listaProductos", localStorage.getItem("listaProductos") + PRODUCT['nombre']);
 
 }
 
 function newCompany() {
-
-    document.getElementById("botonNuevaEmpresa").display = "initial";
 
     const COMPANY = {
         nombre: document.getElementById("Name").value,
@@ -177,8 +170,9 @@ function newCompany() {
         creadores: personas
     };
 
-    document.getElementById("newItemForm").remove();
-    //TODO: FALTARIA MODIFICAR LOS VALORES DE LAS PERSONAS
+    document.getElementById("newItemForm").innerHTML = "";
+
+        //TODO: FALTARIA MODIFICAR LOS VALORES DE LAS PERSONAS
     //localStorage.setItem(COMPANY['nombre'], JSON.stringify(COMPANY));
     //localStorage.setItem("listaCompany", localStorage.getItem("listaCompany") + COMPANY['nombre']);
 
