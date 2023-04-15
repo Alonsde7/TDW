@@ -6,32 +6,60 @@ function onLoad(event) {
     localStorage.setItem("x", "x");
     localStorage.setItem("y", "y");
     localStorage.setItem("z", "z");
+    mostrarelementos();
 }
 
-function mostrarelementos(){
+function mostrarelementos() {
 
+    const ARRAYPRODUCTOS = JSON.parse(localStorage.getItem("listaProductos")) ?? [];
+
+    console.log(ARRAYPRODUCTOS);
     const TABLE = document.getElementById("mainTable");
-    const NEWROW = document.createElement("td");
-    TABLE.appendChild(NEWROW);
+
+    for (let producto in ARRAYPRODUCTOS) {
+
+        const NEWROW = document.createElement("tr");
+        TABLE.appendChild(NEWROW);
+
+        let newElement = document.createElement("td");
+        NEWROW.appendChild(newElement);
+
+        newElement.innerHTML += `<img src=\"${ARRAYPRODUCTOS[producto]['imagePath']}\" name=\"${ARRAYPRODUCTOS[producto]['nombre']}\" alt=\"Im&aacute;gen de ${ARRAYPRODUCTOS[producto]['nombre']}\">${ARRAYPRODUCTOS[producto]['nombre']}`;
+
+        newElement = document.createElement("td");
+        NEWROW.appendChild(newElement);
+        const primerAutor = JSON.parse(localStorage.getItem(ARRAYPRODUCTOS[producto]["creadores"][0])) ?? [];
+        newElement.innerHTML += `<img src=\"${primerAutor['imagePath']}\" name=\"${primerAutor['nombre']}\" alt=\"Im&aacute;gen de ${primerAutor['nombre']}\">${primerAutor['nombre']}`;
+
+        newElement = document.createElement("td");
+        NEWROW.appendChild(newElement);
+        const primeraEmpresa = JSON.parse(localStorage.getItem(ARRAYPRODUCTOS[producto]['empresas'][0])) ?? [];
+        newElement.innerHTML += `<img src=\"${primeraEmpresa['imagePath']}\" name=\"${primeraEmpresa['nombre']}\" alt=\"Im&aacute;gen de ${primeraEmpresa['nombre']}\">${primeraEmpresa['nombre']}`;
+}   
+    
 }
 
 function editItem(element) {
     const padre = element.parentElement;
 }
 
+//FALTA COMPROBAR
 function deleteItem(element) {
-    
-    const NOMBRE = element.parentElement.getElementsByTagName("img").textContent;
 
+    const NOMBRE = element.parentElement.getElementsByTagName("img")[0].getAttribute('name');
+
+    console.log(NOMBRE);
     for (var lista in ["listaCompany", "listaProductos", "listaPersonas"]) {
-        const ARRAY = JSON.parse(localStorage.getItem(lista) ?? []);
+        console.log(lista);
+        console.log(localStorage.getItem(lista));
+        const ARRAY = JSON.parse(localStorage.getItem(lista)) ?? [];
         if (ARRAY.indexOf(NOMBRE) != -1) {
             ARRAY.splice(ARRAY.indexOf(NOMBRE), 1);
             localStorage.setItem(lista, ARRAY);
         }
     }
 
-    localStorage.deleteItem(NOMBRE);
+    localStorage.removeItem(NOMBRE);
     element.parentElement.innerHTML = "<td></td>";
 }
 
@@ -199,3 +227,66 @@ function newCompany() {
     personas = [];
 
 }
+
+/**
+ *  <td> <img src="images/sgml.jpg" alt="Im&aacute;en de sgml">
+                        SGML
+                    </td>
+                    <td>
+                        <img src="images/Vannervar.jpg" alt="Im&aacute;en de Vannervar">
+                        Vannervar Bush
+                    </td>
+                    <td>
+                        <img src="images/IBM.jpg" alt="Im&aacute;en de IBM">
+                        IBM
+                    </td>
+                </tr>
+                <tr>
+                    <td> <img src="images/XML.jpg" alt="Im&aacute;en de XML">
+                        XML
+                    </td>
+                    <td rowspan="2">
+                        <a href="bernerlee.html" title="bernerlee">
+                            <img src="images/Tim_berners_lee.jpg" alt="Im&aacute;en de Tim Berners Lee">
+                            Tim Berners Lee
+                        </a>
+                    </td>
+                    <td>
+                        <img src="images/CERN.jpg" alt="Im&aacute;en del CERN">
+                        CERN
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="html.html" title="HTML">
+                            <img src="images/HTML.jpg" alt="Im&aacute;en de HTML">
+                            HTML
+                        </a>
+                    </td>
+                    <td>
+                        <img src="images/W3c.jpg" alt="Im&aacute;en de W3C">
+                        W3C
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <img src="images/HTTP.jpg" alt="Im&aacute;en de http">
+                        HTTP
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <img src="images/CSS.jpg" alt="Im&aacute;en de CSS">
+                        CSS
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <img src="images/JS.jpg" alt="Im&aacute;en de JavaScript">
+                        JavaScript
+                    </td>
+ * 
+ * 
+ * 
+ * 
+ */
