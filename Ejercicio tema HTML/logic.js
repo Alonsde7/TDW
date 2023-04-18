@@ -9,6 +9,29 @@ function onLoad(event) {
     mostrarelementos();
 }
 
+function addWriterOptions() {
+
+    const TABLE = document.getElementById("mainTable");
+
+    for (let elemento of TABLE.getElementsByTagName("td")) {
+        elemento.innerHTML += "<input type=\"button\" name=\"edit\" value=\"edit\" onclick=\"editItem(this)\">";
+        elemento.innerHTML += "<input type=\"button\" name=\"delete\" value=\"delete\" onclick=\" deleteItem(this)\">";
+    }
+
+    const NEWROW = document.createElement("tr");
+    TABLE.appendChild(NEWROW);
+
+    NEWROW.innerHTML += "<td><form><input id=\"botonNuevoProducto\" type=\"button\" name=\"nuevo producto\" value=\"nuevo producto\" onclick=\"newFormProduct()\"></form></td>"
+    NEWROW.innerHTML += "<td><form><input id=\"botonNuevaPersona\" type=\"button\" name=\"nueva persona\" value=\"nueva persona\" onclick=\"newFormPerson()\"></form></td>"
+    NEWROW.innerHTML += "<td><form><input id=\"botonNuevaEmpresa\" type=\"button\" name=\"nuevo entidad\" value=\"nueva entidad\" onclick=\"newFormCompany()\"></form></td>"
+
+    const MAINSTRUCTURE = document.getElementById("mainStructure");
+    const FORM = document.createElement("form");
+    FORM.setAttribute("id", "newItemForm");
+    MAINSTRUCTURE.appendChild(FORM);
+
+}
+
 function mostrarelementos() {
 
     const ARRAYPRODUCTOS = JSON.parse(localStorage.getItem("listaProductos")) ?? [];
@@ -16,27 +39,30 @@ function mostrarelementos() {
     console.log(ARRAYPRODUCTOS);
     const TABLE = document.getElementById("mainTable");
 
-    for (let producto in ARRAYPRODUCTOS) {
+    console.log(ARRAYPRODUCTOS.length);
 
+     for(let i=0; i<ARRAYPRODUCTOS.length;i++){
+        
+        console.log(ARRAYPRODUCTOS[i]);
         const NEWROW = document.createElement("tr");
         TABLE.appendChild(NEWROW);
 
+        //ROWSPAND AQUÍ
         let newElement = document.createElement("td");
         NEWROW.appendChild(newElement);
 
-        newElement.innerHTML += `<img src=\"${ARRAYPRODUCTOS[producto]['imagePath']}\" name=\"${ARRAYPRODUCTOS[producto]['nombre']}\" alt=\"Im&aacute;gen de ${ARRAYPRODUCTOS[producto]['nombre']}\">${ARRAYPRODUCTOS[producto]['nombre']}`;
+        newElement.innerHTML += `<img src=\"${ARRAYPRODUCTOS[i]['imagePath']}\" name=\"${ARRAYPRODUCTOS[i]['nombre']}\" alt=\"Im&aacute;gen de ${ARRAYPRODUCTOS[i]['nombre']}\">${ARRAYPRODUCTOS[i]['nombre']}`;
 
         newElement = document.createElement("td");
         NEWROW.appendChild(newElement);
-        const primerAutor = JSON.parse(localStorage.getItem(ARRAYPRODUCTOS[producto]["creadores"][0])) ?? [];
+        const primerAutor = ARRAYPRODUCTOS[i]["creadores"][0] ?? [];
         newElement.innerHTML += `<img src=\"${primerAutor['imagePath']}\" name=\"${primerAutor['nombre']}\" alt=\"Im&aacute;gen de ${primerAutor['nombre']}\">${primerAutor['nombre']}`;
 
         newElement = document.createElement("td");
         NEWROW.appendChild(newElement);
-        const primeraEmpresa = JSON.parse(localStorage.getItem(ARRAYPRODUCTOS[producto]['empresas'][0])) ?? [];
+        const primeraEmpresa = ARRAYPRODUCTOS[i]["empresas"][0] ?? [];
         newElement.innerHTML += `<img src=\"${primeraEmpresa['imagePath']}\" name=\"${primeraEmpresa['nombre']}\" alt=\"Im&aacute;gen de ${primeraEmpresa['nombre']}\">${primeraEmpresa['nombre']}`;
-}   
-    
+    }
 }
 
 function editItem(element) {
@@ -70,24 +96,7 @@ function onLoging() {
         const FORMULARIO = document.getElementById("logging_form");
         FORMULARIO.innerHTML = "<input type=\"submit\" name=\"logout\" value=\"logout\">";
 
-        const TABLE = document.getElementById("mainTable");
-
-        for (let elemento of TABLE.getElementsByTagName("td")) {
-            elemento.innerHTML += "<input type=\"button\" name=\"edit\" value=\"edit\" onclick=\"editItem(this)\">";
-            elemento.innerHTML += "<input type=\"button\" name=\"delete\" value=\"delete\" onclick=\" deleteItem(this)\">";
-        }
-
-        const NEWROW = document.createElement("tr");
-        TABLE.appendChild(NEWROW);
-
-        NEWROW.innerHTML += "<td><form><input id=\"botonNuevoProducto\" type=\"button\" name=\"nuevo producto\" value=\"nuevo producto\" onclick=\"newFormProduct()\"></form></td>"
-        NEWROW.innerHTML += "<td><form><input id=\"botonNuevaPersona\" type=\"button\" name=\"nueva persona\" value=\"nueva persona\" onclick=\"newFormPerson()\"></form></td>"
-        NEWROW.innerHTML += "<td><form><input id=\"botonNuevaEmpresa\" type=\"button\" name=\"nuevo entidad\" value=\"nueva entidad\" onclick=\"newFormCompany()\"></form></td>"
-
-        const MAINSTRUCTURE = document.getElementById("mainStructure");
-        const FORM = document.createElement("form");
-        FORM.setAttribute("id", "newItemForm");
-        MAINSTRUCTURE.appendChild(FORM);
+        addWriterOptions();
     }
 }
 
@@ -197,11 +206,13 @@ function newProduct() {
 
     document.getElementById("newItemForm").innerHTML = "";
     //TODO: FALTARIA MODIFICAR LOS VALORES DE LAS PERSONAS
-    localStorage.setItem(PRODUCT['nombre'], JSON.stringify(PRODUCT));
+    //localStorage.setItem(PRODUCT['nombre'], JSON.stringify(PRODUCT));
 
-    const ARRAYPRODUCTOS = JSON.parse(localStorage.getItem("listaPersonas")) ?? [];
+    const ARRAYPRODUCTOS = JSON.parse(localStorage.getItem("listaProductos ")) ?? [];
     ARRAYPRODUCTOS.push(PRODUCT);
     localStorage.setItem("listaProductos", JSON.stringify(ARRAYPRODUCTOS));
+
+    mostrarelementos();
 }
 
 function newCompany() {
