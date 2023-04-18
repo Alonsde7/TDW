@@ -6,7 +6,7 @@ function onLoad(event) {
     localStorage.setItem("x", "x");
     localStorage.setItem("y", "y");
     localStorage.setItem("z", "z");
-    mostrarelementos();
+    mostrarElementos();
 }
 
 function addWriterOptions() {
@@ -32,17 +32,19 @@ function addWriterOptions() {
 
 }
 
-function mostrarelementos() {
+function mostrarElementos() {
 
     const ARRAYPRODUCTOS = JSON.parse(localStorage.getItem("listaProductos")) ?? [];
 
     console.log(ARRAYPRODUCTOS);
     const TABLE = document.getElementById("mainTable");
 
+    TABLE.innerHTML = "";
+
     console.log(ARRAYPRODUCTOS.length);
 
-     for(let i=0; i<ARRAYPRODUCTOS.length;i++){
-        
+    for (let i = 0; i < ARRAYPRODUCTOS.length; i++) {
+
         console.log(ARRAYPRODUCTOS[i]);
         const NEWROW = document.createElement("tr");
         TABLE.appendChild(NEWROW);
@@ -75,15 +77,38 @@ function deleteItem(element) {
     const NOMBRE = element.parentElement.getElementsByTagName("img")[0].getAttribute('name');
 
     console.log(NOMBRE);
-    for (var lista in ["listaCompany", "listaProductos", "listaPersonas"]) {
+    //for (var lista in ["listaCompany", "listaProductos", "listaPersonas"]) {
+
+    ["listaCompany", "listaProductos", "listaPersonas"].forEach(lista=>{
+
         console.log(lista);
-        console.log(localStorage.getItem(lista));
-        const ARRAY = JSON.parse(localStorage.getItem(lista)) ?? [];
-        if (ARRAY.indexOf(NOMBRE) != -1) {
-            ARRAY.splice(ARRAY.indexOf(NOMBRE), 1);
-            localStorage.setItem(lista, ARRAY);
+
+
+    });
+    
+
+    //let array = JSON.parse(localStorage.getItem("listaCompany")) ?? [];
+
+    //tengo que buscar el objeto
+    /*if (array.indexOf(NOMBRE) != -1) {
+        array.splice(array.indexOf(NOMBRE), 1);
+        localStorage.setItem("listaCompany", array);
+    } else {
+        array = JSON.parse(localStorage.getItem("listaProductos")) ?? [];
+        if (array.indexOf(NOMBRE) != -1) {
+            console.log("ENTRO");
+            array.splice(array.indexOf(NOMBRE), 1);
+            localStorage.setItem("listaProductos", array);
+
+        } else {
+            array = JSON.parse(localStorage.getItem("listaPersonas")) ?? [];
+
+            if (array.indexOf(NOMBRE) != -1) {
+                array.splice(array.indexOf(NOMBRE), 1);
+                localStorage.setItem(listaPersonas, array);
+            }
         }
-    }
+    }*/
 
     localStorage.removeItem(NOMBRE);
     element.parentElement.innerHTML = "<td></td>";
@@ -159,7 +184,7 @@ function newPerson() {
     };
 
     document.getElementById("newItemForm").innerHTML = "";
-    localStorage.setItem(PERSONA['nombre'], JSON.stringify(PERSONA));
+    //localStorage.setItem(PERSONA['nombre'], JSON.stringify(PERSONA));
     const ARRAYPERSONAS = JSON.parse(localStorage.getItem("listaPersonas")) ?? [];
     ARRAYPERSONAS.push(PERSONA);
     localStorage.setItem("listaPersonas", JSON.stringify(ARRAYPERSONAS));
@@ -208,11 +233,12 @@ function newProduct() {
     //TODO: FALTARIA MODIFICAR LOS VALORES DE LAS PERSONAS
     //localStorage.setItem(PRODUCT['nombre'], JSON.stringify(PRODUCT));
 
-    const ARRAYPRODUCTOS = JSON.parse(localStorage.getItem("listaProductos ")) ?? [];
+    const ARRAYPRODUCTOS = JSON.parse(localStorage.getItem("listaProductos")) ?? [];
     ARRAYPRODUCTOS.push(PRODUCT);
     localStorage.setItem("listaProductos", JSON.stringify(ARRAYPRODUCTOS));
 
-    mostrarelementos();
+    mostrarElementos();
+    addWriterOptions();
 }
 
 function newCompany() {
@@ -229,7 +255,7 @@ function newCompany() {
     document.getElementById("newItemForm").innerHTML = "";
 
     //TODO: FALTARIA MODIFICAR LOS VALORES DE LAS PERSONAS
-    localStorage.setItem(COMPANY['nombre'], JSON.stringify(COMPANY));
+    //localStorage.setItem(COMPANY['nombre'], JSON.stringify(COMPANY));
 
     const ARRAYCOMPANIES = JSON.parse(localStorage.getItem("listaCompany")) ?? [];
     ARRAYCOMPANIES.push(COMPANY);
