@@ -35,235 +35,237 @@ function addWriterOptions() {
 function mostrarElementos() {
 
     const ARRAYPRODUCTOS = JSON.parse(localStorage.getItem("listaProductos")) ?? [];
-
-    console.log(ARRAYPRODUCTOS);
+    const ARRAYPEOPLE = JSON.parse(localStorage.getItem("listaPersonas")) ?? [];
+    const ARRAYCOMPANIES = JSON.parse(localStorage.getItem("listaCompany")) ?? [];
     const TABLE = document.getElementById("mainTable");
 
     TABLE.innerHTML = "";
 
-    console.log(ARRAYPRODUCTOS.length);
+    for (let i = 0; i < Math.max(ARRAYPRODUCTOS.length, ARRAYPEOPLE.length, ARRAYCOMPANIES.length); i++) {
 
-    for (let i = 0; i < ARRAYPRODUCTOS.length; i++) {
-
-        console.log(ARRAYPRODUCTOS[i]);
         const NEWROW = document.createElement("tr");
+        let newElement = document.createElement("td");
         TABLE.appendChild(NEWROW);
 
-        //ROWSPAND AQUÍ
-        let newElement = document.createElement("td");
-        NEWROW.appendChild(newElement);
+        const PRODUCT = ARRAYPRODUCTOS[i] ?? [];
+        newElement.innerHTML = `<img src="${['imagePath']}" name="${PRODUCT['nombre']}">${PRODUCT['nombre']}`;
+        NEWROW.appendChild(newElement)
 
-        newElement.innerHTML += `<img src=\"${ARRAYPRODUCTOS[i]['imagePath']}\" name=\"${ARRAYPRODUCTOS[i]['nombre']}\" alt=\"Im&aacute;gen de ${ARRAYPRODUCTOS[i]['nombre']}\">${ARRAYPRODUCTOS[i]['nombre']}`;
+        const AUTHOR = ARRAYPEOPLE[i] ?? [];
+        if (AUTHOR.typeOf != undefined) {
+            newElement = document.createElement("td");
+            NEWROW.appendChild(newElement);
+            console.log("entra");
+            newElement.innerHTML = `<img src="${AUTHOR['imagePath']}" name="${AUTHOR['nombre']}">${AUTHOR['nombre']}`;
+        }
+        else { NEWROW.innerHTML += "<td></td>" }
 
-        newElement = document.createElement("td");
-        NEWROW.appendChild(newElement);
-        const primerAutor = ARRAYPRODUCTOS[i]["creadores"][0] ?? [];
-        newElement.innerHTML += `<img src=\"${primerAutor['imagePath']}\" name=\"${primerAutor['nombre']}\" alt=\"Im&aacute;gen de ${primerAutor['nombre']}\">${primerAutor['nombre']}`;
-
-        newElement = document.createElement("td");
-        NEWROW.appendChild(newElement);
-        const primeraEmpresa = ARRAYPRODUCTOS[i]["empresas"][0] ?? [];
-        newElement.innerHTML += `<img src=\"${primeraEmpresa['imagePath']}\" name=\"${primeraEmpresa['nombre']}\" alt=\"Im&aacute;gen de ${primeraEmpresa['nombre']}\">${primeraEmpresa['nombre']}`;
+        const COMPANY = ARRAYCOMPANIES[i] ?? [];
+        if (COMPANY.typeOf != undefined) {
+            newElement = document.createElement("td");
+            NEWROW.appendChild(newElement);
+            newElement.innerHTML = `<img src="${COMPANY['imagePath']}\" name="${COMPANY['nombre']}">${COMPANY['nombre']}`;
+        }
+        else { NEWROW.innerHTML += "<td></td>" }
     }
 }
 
-function editItem(element) {
-    const padre = element.parentElement;
-}
+    function editItem(element) {
+        const padre = element.parentElement;
+    }
 
-//FALTA COMPROBAR
-function deleteItem(element) {
+    //FALTA COMPROBAR
+    function deleteItem(element) {
 
-    const NOMBRE = element.parentElement.getElementsByTagName("img")[0].getAttribute('name');
+        const NOMBRE = element.parentElement.getElementsByTagName("img")[0].getAttribute('name');
 
-    console.log(NOMBRE);
-    //for (var lista in ["listaCompany", "listaProductos", "listaPersonas"]) {
+        console.log(NOMBRE);
+        //for (var lista in ["listaCompany", "listaProductos", "listaPersonas"]) {
 
-    ["listaCompany", "listaProductos", "listaPersonas"].forEach(lista=>{
+        ["listaCompany", "listaProductos", "listaPersonas"].forEach(lista => {
 
-        console.log(lista);
+            console.log(lista);
 
 
-    });
-    
+        });
 
-    //let array = JSON.parse(localStorage.getItem("listaCompany")) ?? [];
 
-    //tengo que buscar el objeto
-    /*if (array.indexOf(NOMBRE) != -1) {
-        array.splice(array.indexOf(NOMBRE), 1);
-        localStorage.setItem("listaCompany", array);
-    } else {
-        array = JSON.parse(localStorage.getItem("listaProductos")) ?? [];
-        if (array.indexOf(NOMBRE) != -1) {
-            console.log("ENTRO");
+        //let array = JSON.parse(localStorage.getItem("listaCompany")) ?? [];
+
+        //tengo que buscar el objeto
+        /*if (array.indexOf(NOMBRE) != -1) {
             array.splice(array.indexOf(NOMBRE), 1);
-            localStorage.setItem("listaProductos", array);
-
+            localStorage.setItem("listaCompany", array);
         } else {
-            array = JSON.parse(localStorage.getItem("listaPersonas")) ?? [];
-
+            array = JSON.parse(localStorage.getItem("listaProductos")) ?? [];
             if (array.indexOf(NOMBRE) != -1) {
+                console.log("ENTRO");
                 array.splice(array.indexOf(NOMBRE), 1);
-                localStorage.setItem(listaPersonas, array);
+                localStorage.setItem("listaProductos", array);
+     
+            } else {
+                array = JSON.parse(localStorage.getItem("listaPersonas")) ?? [];
+     
+                if (array.indexOf(NOMBRE) != -1) {
+                    array.splice(array.indexOf(NOMBRE), 1);
+                    localStorage.setItem(listaPersonas, array);
+                }
             }
+        }*/
+
+        localStorage.removeItem(NOMBRE);
+        element.parentElement.innerHTML = "<td></td>";
+    }
+
+    function onLoging() {
+
+        if (localStorage.getItem(document.getElementById("user_form").value) == document.getElementById("password_form").value) {
+
+            const FORMULARIO = document.getElementById("logging_form");
+            FORMULARIO.innerHTML = "<input type=\"submit\" name=\"logout\" value=\"logout\">";
+
+            addWriterOptions();
         }
-    }*/
+    }
 
-    localStorage.removeItem(NOMBRE);
-    element.parentElement.innerHTML = "<td></td>";
-}
+    function newForm() {
 
-function onLoging() {
+        const FORM = document.getElementById("newItemForm");
 
-    if (localStorage.getItem(document.getElementById("user_form").value) == document.getElementById("password_form").value) {
+        FORM.innerHTML = "<label for=\"Name\">Nombre y Apellidos: </label><input id=\"Name\" type=\"text\" name=\"Name\"/> <br>";
+        FORM.innerHTML += "<label for=\"BornDate\">Año de nacimiento: </label><input id=\"BornDate\" type=\"date\" name=\"BornDate\"/><br>";
+        FORM.innerHTML += "<label for=\"DeathDate\">Año de defunci&oacute;n: </label><input id=\"DeathDate\" type=\"date\" name=\"DeathDate\"/><br>";
+        FORM.innerHTML += "<label for=\"WikiPage\">P&aacute;gina de la Wikipedia: </label><input id=\"WikiPage\" type=\"text\" name=\"WikiPage\"/><br>";
+        FORM.innerHTML += "<label for=\"ImagePath\">Nombre Absoluto de la imagen: </label><input id=\"ImagePath\" type=\"text\" name=\"ImagePath\"/>";
 
-        const FORMULARIO = document.getElementById("logging_form");
-        FORMULARIO.innerHTML = "<input type=\"submit\" name=\"logout\" value=\"logout\">";
+    }
 
+    function newFormPerson() {
+
+        newForm();
+
+        const FORM = document.getElementById("newItemForm");
+
+        FORM.innerHTML += "<input type=\"button\" name=\"Crear Persona\" value=\"crear Persona\" onclick=\"newPerson()\">";
+
+    }
+
+    function newFormCompany() {
+
+        personas = [];
+
+        newForm();
+
+        const FORM = document.getElementById("newItemForm");
+
+        //En vez de un texto, se podia hacer un selector de personas
+        FORM.innerHTML += "<br><label for=\"Addpersonas\">Nombre y Apellidos de la persona: </label><input id=\"Addpersonas\" type=\"text\" name=\"Addpersonas\"/>";
+        FORM.innerHTML += "<input type=\"button\" name=\"Add personas\" value=\"Añadir\" onclick=\"addPersona()\"><br><ul></ul><br>";
+        FORM.innerHTML += "<input type=\"button\" name=\"crear Compañia\" value=\"crear Compañia\" onclick=\"newCompany()\">";
+
+
+    }
+
+    function addPersona() {
+
+        personas.push(document.getElementById("Addpersonas").value);
+        document.getElementsByTagName("ul")[0].innerHTML += `<li>${document.getElementById("Addpersonas").value}</li>`;
+
+    }
+
+    function newPerson() {
+
+        const PERSONA = {
+            nombre: document.getElementById("Name").value,
+            fechaNac: document.getElementById("BornDate").value,
+            fechaDef: document.getElementById("DeathDate").value,
+            imagePath: document.getElementById("ImagePath").value,
+            WikiPage: document.getElementById("WikiPage").value,
+            referenciaP: 0,
+            referenciaE: 0
+        };
+
+        document.getElementById("newItemForm").innerHTML = "";
+        //localStorage.setItem(PERSONA['nombre'], JSON.stringify(PERSONA));
+        const ARRAYPERSONAS = JSON.parse(localStorage.getItem("listaPersonas")) ?? [];
+        ARRAYPERSONAS.push(PERSONA);
+        localStorage.setItem("listaPersonas", JSON.stringify(ARRAYPERSONAS));
+
+    }
+
+    function newFormProduct() {
+
+        personas = [];
+
+        newForm();
+
+        const FORM = document.getElementById("newItemForm");
+
+        FORM.innerHTML += "<br><label for=\"Addpersonas\">Nombre y Apellidos de la persona: </label><input id=\"Addpersonas\" type=\"text\" name=\"Addpersonas\"/>";
+        FORM.innerHTML += "<input type=\"button\" name=\"Add personas\" value=\"Añadir\" onclick=\"addPersona()\"><br><ul></ul><br>";
+
+        FORM.innerHTML += "<br><label for=\"AddCompany\">Nombre de la compañia: </label><input id=\"AddCompany\" type=\"text\" name=\"AddCompany\"/>";
+        FORM.innerHTML += "<input type=\"button\" name=\"Add Compañia\" value=\"Añadir\" onclick=\"addCompany()\"><br><ul></ul><br>";
+
+        FORM.innerHTML += "<input type=\"button\" name=\"crear Producto\" value=\"crear Producto\" onclick=\"newProduct()\">";
+
+    }
+
+    function addCompany() {
+
+        companies.push(document.getElementById("AddCompany").value);
+        document.getElementsByTagName("ul")[1].innerHTML += `<li>${document.getElementById("AddCompany").value}</li>`;
+
+    }
+
+    function newProduct() {
+
+        const PRODUCT = {
+
+            nombre: document.getElementById("Name").value,
+            fechaNac: document.getElementById("BornDate").value,
+            fechaDef: document.getElementById("DeathDate").value,
+            imagePath: document.getElementById("ImagePath").value,
+            WikiPage: document.getElementById("WikiPage").value,
+            creadores: personas,
+            empresas: companies
+        }
+
+        document.getElementById("newItemForm").innerHTML = "";
+        //TODO: FALTARIA MODIFICAR LOS VALORES DE LAS PERSONAS
+        //localStorage.setItem(PRODUCT['nombre'], JSON.stringify(PRODUCT));
+
+        const ARRAYPRODUCTOS = JSON.parse(localStorage.getItem("listaProductos")) ?? [];
+        ARRAYPRODUCTOS.push(PRODUCT);
+        localStorage.setItem("listaProductos", JSON.stringify(ARRAYPRODUCTOS));
+
+        mostrarElementos();
         addWriterOptions();
     }
-}
 
-function newForm() {
+    function newCompany() {
 
-    const FORM = document.getElementById("newItemForm");
+        const COMPANY = {
+            nombre: document.getElementById("Name").value,
+            fechaNac: document.getElementById("BornDate").value,
+            fechaDef: document.getElementById("DeathDate").value,
+            imagePath: document.getElementById("ImagePath").value,
+            WikiPage: document.getElementById("WikiPage").value,
+            creadores: personas
+        };
 
-    FORM.innerHTML = "<label for=\"Name\">Nombre y Apellidos: </label><input id=\"Name\" type=\"text\" name=\"Name\"/> <br>";
-    FORM.innerHTML += "<label for=\"BornDate\">Año de nacimiento: </label><input id=\"BornDate\" type=\"date\" name=\"BornDate\"/><br>";
-    FORM.innerHTML += "<label for=\"DeathDate\">Año de defunci&oacute;n: </label><input id=\"DeathDate\" type=\"date\" name=\"DeathDate\"/><br>";
-    FORM.innerHTML += "<label for=\"WikiPage\">P&aacute;gina de la Wikipedia: </label><input id=\"WikiPage\" type=\"text\" name=\"WikiPage\"/><br>";
-    FORM.innerHTML += "<label for=\"ImagePath\">Nombre Absoluto de la imagen: </label><input id=\"ImagePath\" type=\"text\" name=\"ImagePath\"/>";
+        document.getElementById("newItemForm").innerHTML = "";
 
-}
+        //TODO: FALTARIA MODIFICAR LOS VALORES DE LAS PERSONAS
+        //localStorage.setItem(COMPANY['nombre'], JSON.stringify(COMPANY));
 
-function newFormPerson() {
+        const ARRAYCOMPANIES = JSON.parse(localStorage.getItem("listaCompany")) ?? [];
+        ARRAYCOMPANIES.push(COMPANY);
+        localStorage.setItem("listaCompany", JSON.stringify(ARRAYCOMPANIES));
 
-    newForm();
+        personas = [];
 
-    const FORM = document.getElementById("newItemForm");
-
-    FORM.innerHTML += "<input type=\"button\" name=\"Crear Persona\" value=\"crear Persona\" onclick=\"newPerson()\">";
-
-}
-
-function newFormCompany() {
-
-    personas = [];
-
-    newForm();
-
-    const FORM = document.getElementById("newItemForm");
-
-    //En vez de un texto, se podia hacer un selector de personas
-    FORM.innerHTML += "<br><label for=\"Addpersonas\">Nombre y Apellidos de la persona: </label><input id=\"Addpersonas\" type=\"text\" name=\"Addpersonas\"/>";
-    FORM.innerHTML += "<input type=\"button\" name=\"Add personas\" value=\"Añadir\" onclick=\"addPersona()\"><br><ul></ul><br>";
-    FORM.innerHTML += "<input type=\"button\" name=\"crear Compañia\" value=\"crear Compañia\" onclick=\"newCompany()\">";
-
-
-}
-
-function addPersona() {
-
-    personas.push(document.getElementById("Addpersonas").value);
-
-    document.getElementsByTagName("ul")[0].innerHTML += `<li>${document.getElementById("Addpersonas").value}</li>`;
-
-}
-
-function newPerson() {
-
-    const PERSONA = {
-        nombre: document.getElementById("Name").value,
-        fechaNac: document.getElementById("BornDate").value,
-        fechaDef: document.getElementById("DeathDate").value,
-        imagePath: document.getElementById("ImagePath").value,
-        WikiPage: document.getElementById("WikiPage").value,
-        referenciaP: 0,
-        referenciaE: 0
-    };
-
-    document.getElementById("newItemForm").innerHTML = "";
-    //localStorage.setItem(PERSONA['nombre'], JSON.stringify(PERSONA));
-    const ARRAYPERSONAS = JSON.parse(localStorage.getItem("listaPersonas")) ?? [];
-    ARRAYPERSONAS.push(PERSONA);
-    localStorage.setItem("listaPersonas", JSON.stringify(ARRAYPERSONAS));
-
-}
-
-function newFormProduct() {
-
-    personas = [];
-
-    newForm();
-
-    const FORM = document.getElementById("newItemForm");
-
-    FORM.innerHTML += "<br><label for=\"Addpersonas\">Nombre y Apellidos de la persona: </label><input id=\"Addpersonas\" type=\"text\" name=\"Addpersonas\"/>";
-    FORM.innerHTML += "<input type=\"button\" name=\"Add personas\" value=\"Añadir\" onclick=\"addPersona()\"><br><ul></ul><br>";
-
-    FORM.innerHTML += "<br><label for=\"AddCompany\">Nombre de la compañia: </label><input id=\"AddCompany\" type=\"text\" name=\"AddCompany\"/>";
-    FORM.innerHTML += "<input type=\"button\" name=\"Add Compañia\" value=\"Añadir\" onclick=\"addCompany()\"><br><ul></ul><br>";
-
-    FORM.innerHTML += "<input type=\"button\" name=\"crear Producto\" value=\"crear Producto\" onclick=\"newProduct()\">";
-
-}
-
-function addCompany() {
-
-    companies.push(document.getElementById("AddCompany").value);
-    document.getElementsByTagName("ul")[1].innerHTML += `<li>${document.getElementById("AddCompany").value}</li>`;
-
-}
-
-function newProduct() {
-
-    const PRODUCT = {
-
-        nombre: document.getElementById("Name").value,
-        fechaNac: document.getElementById("BornDate").value,
-        fechaDef: document.getElementById("DeathDate").value,
-        imagePath: document.getElementById("ImagePath").value,
-        WikiPage: document.getElementById("WikiPage").value,
-        creadores: personas,
-        empresas: companies
     }
-
-    document.getElementById("newItemForm").innerHTML = "";
-    //TODO: FALTARIA MODIFICAR LOS VALORES DE LAS PERSONAS
-    //localStorage.setItem(PRODUCT['nombre'], JSON.stringify(PRODUCT));
-
-    const ARRAYPRODUCTOS = JSON.parse(localStorage.getItem("listaProductos")) ?? [];
-    ARRAYPRODUCTOS.push(PRODUCT);
-    localStorage.setItem("listaProductos", JSON.stringify(ARRAYPRODUCTOS));
-
-    mostrarElementos();
-    addWriterOptions();
-}
-
-function newCompany() {
-
-    const COMPANY = {
-        nombre: document.getElementById("Name").value,
-        fechaNac: document.getElementById("BornDate").value,
-        fechaDef: document.getElementById("DeathDate").value,
-        imagePath: document.getElementById("ImagePath").value,
-        WikiPage: document.getElementById("WikiPage").value,
-        creadores: personas
-    };
-
-    document.getElementById("newItemForm").innerHTML = "";
-
-    //TODO: FALTARIA MODIFICAR LOS VALORES DE LAS PERSONAS
-    //localStorage.setItem(COMPANY['nombre'], JSON.stringify(COMPANY));
-
-    const ARRAYCOMPANIES = JSON.parse(localStorage.getItem("listaCompany")) ?? [];
-    ARRAYCOMPANIES.push(COMPANY);
-    localStorage.setItem("listaCompany", JSON.stringify(ARRAYCOMPANIES));
-
-    personas = [];
-
-}
 
 /**
  *  <td> <img src="images/sgml.jpg" alt="Im&aacute;en de sgml">
