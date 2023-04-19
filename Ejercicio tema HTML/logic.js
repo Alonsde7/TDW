@@ -48,7 +48,7 @@ function mostrarElementos() {
         TABLE.appendChild(NEWROW);
 
         const PRODUCT = ARRAYPRODUCTOS[i] ?? [];
-        newElement.innerHTML = `<img src="${['imagePath']}" name="${PRODUCT['nombre']}">${PRODUCT['nombre']}`;
+        newElement.innerHTML = `<img src="${['imagePath']}" type="producto">${PRODUCT['nombre']}`;
         NEWROW.appendChild(newElement)
 
         const AUTHOR = ARRAYPEOPLE[i] ?? [];
@@ -56,7 +56,7 @@ function mostrarElementos() {
             newElement = document.createElement("td");
             NEWROW.appendChild(newElement);
             console.log("entra");
-            newElement.innerHTML = `<img src="${AUTHOR['imagePath']}" name="${AUTHOR['nombre']}">${AUTHOR['nombre']}`;
+            newElement.innerHTML = `<img src="${AUTHOR['imagePath']}" type="persona">${AUTHOR['nombre']}`;
         }
         else { NEWROW.innerHTML += "<td></td>" }
 
@@ -64,7 +64,7 @@ function mostrarElementos() {
         if (COMPANY.typeOf != undefined) {
             newElement = document.createElement("td");
             NEWROW.appendChild(newElement);
-            newElement.innerHTML = `<img src="${COMPANY['imagePath']}\" name="${COMPANY['nombre']}">${COMPANY['nombre']}`;
+            newElement.innerHTML = `<img src="${COMPANY['imagePath']}\" type="empresa">${COMPANY['nombre']}`;
         }
         else { NEWROW.innerHTML += "<td></td>" }
     }
