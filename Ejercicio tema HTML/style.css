@@ -79,13 +79,25 @@ footer {
     margin-right: 10%;
     margin-bottom: 2%;
     float: left;
-} 
+}
 
-footer img{
+footer img {
     float: left;
 }
 
 img.rightimages {
     margin-right: auto;
     float: right;
+}
+
+[id="newItemForm"]>label,
+[id="newItemForm"] {
+
+    background-color: hsl(0, 0%, 60%);
+    color: hsl(0, 0%, 0%);
+    text-align: center;
+}
+
+[id="newItemForm"] {
+    margin-right: 15%;
 }
