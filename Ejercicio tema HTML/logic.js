@@ -18,9 +18,17 @@ function addListenerOptions() {
     for (let elemento of TABLE.getElementsByTagName("img")) {
         elemento.setAttribute("onclick", "pagina(this)");
     }
+    for (let elemento of TABLE.getElementsByTagName("p")) {
+        elemento.setAttribute("onclick", "pagina(this)");
+    }
+
 }
 
 function pagina(imagen) {
+
+    if (imagen.tagName == 'P'){
+        imagen = imagen.previousElementSibling;
+    }
 
     let lista;
     switch (imagen.getAttribute('columna')) {
@@ -128,7 +136,7 @@ function mostrarElementos() {
             if (OBJECT['nombre']) {
                 let newElement = document.createElement("td");
                 NEWROW.appendChild(newElement);
-                newElement.innerHTML = `<img src="${OBJECT['imagePath']}" name="${OBJECT['nombre']}" id="${i}" columna="${index}">${OBJECT['nombre']}`;
+                newElement.innerHTML = `<img src="${OBJECT['imagePath']}" name="${OBJECT['nombre']}" id="${i}" columna="${index}"><p>${OBJECT['nombre']}</p>`;
             } else { NEWROW.innerHTML += "<td></>" }
         });
     }
@@ -236,6 +244,8 @@ function newPerson() {
 
     mostrarElementos();
     addWriterOptions();
+    addListenerOptions();
+
 
 }
 
@@ -287,6 +297,8 @@ function newProduct() {
 
     mostrarElementos();
     addWriterOptions();
+    addListenerOptions();
+
 }
 
 function newCompany() {
@@ -313,67 +325,6 @@ function newCompany() {
 
     mostrarElementos();
     addWriterOptions();
-}
+    addListenerOptions();
 
-/**
- *  <td> <img src="images/sgml.jpg" alt="Im&aacute;en de sgml">
-                        SGML
-                    </td>
-                    <td>
-                        <img src="images/Vannervar.jpg" alt="Im&aacute;en de Vannervar">
-                        Vannervar Bush
-                    </td>
-                    <td>
-                        <img src="images/IBM.jpg" alt="Im&aacute;en de IBM">
-                        IBM
-                    </td>
-                </tr>
-                <tr>
-                    <td> <img src="images/XML.jpg" alt="Im&aacute;en de XML">
-                        XML
-                    </td>
-                    <td rowspan="2">
-                        <a href="bernerlee.html" title="bernerlee">
-                            <img src="images/Tim_berners_lee.jpg" alt="Im&aacute;en de Tim Berners Lee">
-                            Tim Berners Lee
-                        </a>
-                    </td>
-                    <td>
-                        <img src="images/CERN.jpg" alt="Im&aacute;en del CERN">
-                        CERN
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <a href="html.html" title="HTML">
-                            <img src="images/HTML.jpg" alt="Im&aacute;en de HTML">
-                            HTML
-                        </a>
-                    </td>
-                    <td>
-                        <img src="images/W3c.jpg" alt="Im&aacute;en de W3C">
-                        W3C
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <img src="images/HTTP.jpg" alt="Im&aacute;en de http">
-                        HTTP
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <img src="images/CSS.jpg" alt="Im&aacute;en de CSS">
-                        CSS
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <img src="images/JS.jpg" alt="Im&aacute;en de JavaScript">
-                        JavaScript
-                    </td>
- * 
- * 
- * 
- * 
- */
+}
