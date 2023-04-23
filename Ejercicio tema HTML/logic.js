@@ -3,9 +3,11 @@ let companies = [];
 
 
 function onLoad(event) {
+
     localStorage.setItem("x", "x");
     localStorage.setItem("y", "y");
     localStorage.setItem("z", "z");
+
     mostrarElementos();
     addListenerOptions();
 
@@ -16,37 +18,43 @@ function addListenerOptions() {
     const TABLE = document.getElementById("mainTable");
 
     for (let elemento of TABLE.getElementsByTagName("img")) {
-        elemento.setAttribute("onclick", "pagina(this)");
-    }
-    for (let elemento of TABLE.getElementsByTagName("p")) {
+
         elemento.setAttribute("onclick", "pagina(this)");
     }
 
+    for (let elemento of TABLE.getElementsByTagName("a")) {
+
+        elemento.setAttribute("onclick", "pagina(this)");
+    }
 }
 
 function pagina(imagen) {
 
-    if (imagen.tagName == 'P'){
+    if (imagen.tagName == 'A') {
+
         imagen = imagen.previousElementSibling;
     }
 
     let lista;
     switch (imagen.getAttribute('columna')) {
+
         case '0':
             lista = "listaProductos";
             break;
+
         case '1':
             lista = "listaPersonas";
             break;
+
         case '2':
             lista = "listaCompany";
             break;
     }
+
+    console.log(JSON.parse(localStorage.getItem(lista)));
     const OBJECT = JSON.parse(localStorage.getItem(lista))[imagen.getAttribute("id")];
 
-    console.log(OBJECT);
-
-    const PAGE = `
+    let page = `
     <!DOCTYPE html>
     <html lang="es">
 
@@ -56,6 +64,7 @@ function pagina(imagen) {
     <meta name="author" content="&Aacute;lvaro Alonso Devesa">
     <meta name="keywords" content="Anales de la Ciencia, ${OBJECT["nombre"]}">
     <link rel="stylesheet" type="text/css" href="style.css">
+    <script language="JavaScript" src="logic.js"></script>
 </head>
 
 <body>
@@ -83,11 +92,49 @@ function pagina(imagen) {
             <iframe src="${OBJECT["WikiPage"]}" name="${OBJECT["nombre"]}Frame"></iframe>
         </section>
     </main>
-</body>
+    <footer>`;
 
-</html>`;
+    (OBJECT["creadores"] ?? []).forEach(creador => {
 
-window.open().document.write(PAGE);
+        const PERSONAS = JSON.parse(localStorage.getItem("listaPersonas"));
+
+        let i = 0;
+        encontrado = false;
+
+        while (!encontrado && i < PERSONAS.length) {
+
+            if (PERSONAS[i]["nombre"] == creador) {
+                encontrado = true;
+                page += `<img class="rightimages" src="${PERSONAS[i]["imagePath"]}" id=${i} columna="1" onclick="pagina(this)">`;
+            }
+
+            i++;
+        }
+    });
+
+    (OBJECT["empresas"] ?? []).forEach(empresa => {
+
+        const COMPANY = JSON.parse(localStorage.getItem("listaCompany"));
+
+        let i = 0;
+        encontrado = false;
+
+        while (!encontrado && i < COMPANY.length) {
+
+            if (COMPANY[i]["nombre"] == empresa) {
+
+                encontrado = true;
+                page += `<img class="leftimages" src="${COMPANY[i]["imagePath"]}" id=${i} columna="2" onclick="pagina(this)">`;
+            }
+
+            i++;
+        }
+    });
+
+    page += '</footer></body></html>';
+
+    const VENTANA = window.open(OBJECT["nombre"]);
+    VENTANA.document.write(page);
 
 }
 
@@ -96,7 +143,9 @@ function addWriterOptions() {
     const TABLE = document.getElementById("mainTable");
 
     for (let elemento of TABLE.getElementsByTagName("td")) {
+
         if (elemento.firstChild) {
+
             elemento.innerHTML += "<input type=\"button\" name=\"edit\" value=\"edit\" onclick=\"editItem(this)\">";
             elemento.innerHTML += "<input type=\"button\" name=\"delete\" value=\"delete\" onclick=\" deleteItem(this)\">";
         }
@@ -133,17 +182,36 @@ function mostrarElementos() {
         [ARRAYPRODUCTOS, ARRAYPEOPLE, ARRAYCOMPANIES].forEach((element, index) => {
 
             const OBJECT = element[i] ?? [];
+
             if (OBJECT['nombre']) {
+
                 let newElement = document.createElement("td");
                 NEWROW.appendChild(newElement);
-                newElement.innerHTML = `<img src="${OBJECT['imagePath']}" name="${OBJECT['nombre']}" id="${i}" columna="${index}"><p>${OBJECT['nombre']}</p>`;
-            } else { NEWROW.innerHTML += "<td></>" }
+                newElement.innerHTML = `<img src="${OBJECT['imagePath']}" name="${OBJECT['nombre']}" id="${i}" columna="${index}"><a>${OBJECT['nombre']}</a>`;
+
+            } else { NEWROW.innerHTML += "<td></>"; }
         });
     }
 }
 
 function editItem(element) {
-    const padre = element.parentElement;
+    const IMAGEN = element.parentElement.firstChild;
+    console.log(IMAGEN.getAttribute("columna"));
+
+    switch (IMAGEN.getAttribute("columna")) {
+
+        case '0':
+            newFormProduct(IMAGEN.getAttribute("id"));
+            break;
+
+        case '1':
+            newFormPerson(IMAGEN.getAttribute("id"));
+            break;
+
+        case '2':
+            newFormCompany(IMAGEN.getAttribute("id"));
+            break;
+    }
 }
 
 function deleteItem(element) {
@@ -151,12 +219,15 @@ function deleteItem(element) {
     let lista;
 
     switch (element.parentElement.getElementsByTagName("img")[0].getAttribute('columna')) {
+
         case '0':
             lista = "listaProductos";
             break;
+
         case '1':
             lista = "listaPersonas";
             break;
+
         case '2':
             lista = "listaCompany";
             break;
@@ -192,28 +263,23 @@ function newForm() {
 
 }
 
-function newFormPerson() {
+function newFormPerson(id = -1) {
 
     newForm();
-    const FORM = document.getElementById("newItemForm");
 
-    FORM.innerHTML += "<br><br><input type=\"button\" name=\"Crear Persona\" value=\"crear Persona\" onclick=\"newPerson()\">";
+    document.getElementById("newItemForm").innerHTML += `<br><br><input type="button" name="Crear Persona" value="crear Persona" onclick="newPerson(${id})">`;
 
 }
 
-function newFormCompany() {
-
-    personas = [];
-
-    newForm();
+function newFormCompany(id = -1) {
 
     const FORM = document.getElementById("newItemForm");
+    personas = [];
+    newForm();
 
-    //En vez de un texto, se podia hacer un selector de personas
     FORM.innerHTML += "<br><label for=\"Addpersonas\">Nombre y Apellidos de la persona: </label><input id=\"Addpersonas\" type=\"text\" name=\"Addpersonas\"/>";
     FORM.innerHTML += "<input type=\"button\" name=\"Add personas\" value=\"Añadir\" onclick=\"addPersona()\"><br><ul></ul><br>";
-    FORM.innerHTML += "<input type=\"button\" name=\"crear Compañia\" value=\"crear Compañia\" onclick=\"newCompany()\">";
-
+    FORM.innerHTML += `<input type="button" name="crear Compañia" value="crear Compañia" onclick="newCompany(${id})">`;
 
 }
 
@@ -232,24 +298,22 @@ function newPerson() {
         fechaDef: document.getElementById("DeathDate").value,
         imagePath: document.getElementById("ImagePath").value,
         WikiPage: document.getElementById("WikiPage").value,
-        referenciaP: 0,
-        referenciaE: 0
     };
 
     document.getElementById("newItemForm").innerHTML = "";
-    //localStorage.setItem(PERSONA['nombre'], JSON.stringify(PERSONA));
+
     const ARRAYPERSONAS = JSON.parse(localStorage.getItem("listaPersonas")) ?? [];
-    ARRAYPERSONAS.push(PERSONA);
+    if (id == -1) { ARRAYPERSONAS.push(PERSONA); }
+    else { ARRAYPERSONAS[id] = PERSONA; }
     localStorage.setItem("listaPersonas", JSON.stringify(ARRAYPERSONAS));
 
     mostrarElementos();
     addWriterOptions();
     addListenerOptions();
 
-
 }
 
-function newFormProduct() {
+function newFormProduct(id = -1) {
 
     personas = [];
 
@@ -263,7 +327,7 @@ function newFormProduct() {
     FORM.innerHTML += "<br><label for=\"AddCompany\">Nombre de la compañia: </label><input id=\"AddCompany\" type=\"text\" name=\"AddCompany\"/>";
     FORM.innerHTML += "<input type=\"button\" name=\"Add Compañia\" value=\"Añadir\" onclick=\"addCompany()\"><br><ul></ul><br>";
 
-    FORM.innerHTML += "<input type=\"button\" name=\"crear Producto\" value=\"crear Producto\" onclick=\"newProduct()\">";
+    FORM.innerHTML += `<input type="button" name="crear Producto" value="crear Producto" onclick="newProduct(${id})">`;
 
 }
 
@@ -288,11 +352,10 @@ function newProduct() {
     }
 
     document.getElementById("newItemForm").innerHTML = "";
-    //TODO: FALTARIA MODIFICAR LOS VALORES DE LAS PERSONAS
-    //localStorage.setItem(PRODUCT['nombre'], JSON.stringify(PRODUCT));
 
     const ARRAYPRODUCTOS = JSON.parse(localStorage.getItem("listaProductos")) ?? [];
-    ARRAYPRODUCTOS.push(PRODUCT);
+    if (id == -1) { ARRAYPRODUCTOS.push(PRODUCT); }
+    else { ARRAYPRODUCTOS[id] = PRODUCT; }
     localStorage.setItem("listaProductos", JSON.stringify(ARRAYPRODUCTOS));
 
     mostrarElementos();
@@ -314,11 +377,9 @@ function newCompany() {
 
     document.getElementById("newItemForm").innerHTML = "";
 
-    //TODO: FALTARIA MODIFICAR LOS VALORES DE LAS PERSONAS
-    //localStorage.setItem(COMPANY['nombre'], JSON.stringify(COMPANY));
-
     const ARRAYCOMPANIES = JSON.parse(localStorage.getItem("listaCompany")) ?? [];
-    ARRAYCOMPANIES.push(COMPANY);
+    if (id == -1) { ARRAYCOMPANIES.push(COMPANY); }
+    else { ARRAYCOMPANIES[id] = COMPANY; }
     localStorage.setItem("listaCompany", JSON.stringify(ARRAYCOMPANIES));
 
     personas = [];
