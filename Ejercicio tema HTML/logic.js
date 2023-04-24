@@ -51,7 +51,7 @@ function pagina(imagen) {
             break;
     }
 
-    const OBJECT = JSON.parse(localStorage.getItem(lista))[imagen.getAttribute("id")];
+    const OBJECT = JSON.parse(localStorage.getItem(lista))[imagen.getAttribute("idLista")];
 
     let page = `
     <!DOCTYPE html>
@@ -104,7 +104,7 @@ function pagina(imagen) {
 
             if (PERSONAS[i]["nombre"] == creador) {
                 encontrado = true;
-                page += `<img class="rightimages" src="${PERSONAS[i]["imagePath"]}" id=${i} columna="1" onclick="pagina(this)">`;
+                page += `<img class="rightimages" src="${PERSONAS[i]["imagePath"]}" idLista=${i} columna="1" onclick="pagina(this)">`;
             }
 
             i++;
@@ -123,7 +123,7 @@ function pagina(imagen) {
             if (COMPANY[i]["nombre"] == empresa) {
 
                 encontrado = true;
-                page += `<img class="leftimages" src="${COMPANY[i]["imagePath"]}" id=${i} columna="2" onclick="pagina(this)">`;
+                page += `<img class="leftimages" src="${COMPANY[i]["imagePath"]}" idLista=${i} columna="2" onclick="pagina(this)">`;
             }
 
             i++;
@@ -180,13 +180,13 @@ function mostrarElementos() {
 
         [ARRAYPRODUCTOS, ARRAYPEOPLE, ARRAYCOMPANIES].forEach((element, index) => {
 
-            const OBJECT = element[i] ?? [];
+            const OBJECT = element[i];
 
             if (OBJECT) {
 
                 let newElement = document.createElement("td");
                 NEWROW.appendChild(newElement);
-                newElement.innerHTML = `<img src="${OBJECT['imagePath']}" name="${OBJECT['nombre']}" id="${i}" columna="${index}"><a>${OBJECT['nombre']}</a>`;
+                newElement.innerHTML = `<img src="${OBJECT['imagePath']}" name="${OBJECT['nombre']}" idLista="${i}" columna="${index}"><a>${OBJECT['nombre']}</a>`;
 
             } else { NEWROW.innerHTML += "<td></>"; }
         });
@@ -199,15 +199,15 @@ function editItem(element) {
     switch (IMAGEN.getAttribute("columna")) {
 
         case '0':
-            newFormProduct(IMAGEN.getAttribute("id"));
+            newFormProduct(IMAGEN.getAttribute("idLista"));
             break;
 
         case '1':
-            newFormPerson(IMAGEN.getAttribute("id"));
+            newFormPerson(IMAGEN.getAttribute("idLista"));
             break;
 
         case '2':
-            newFormCompany(IMAGEN.getAttribute("id"));
+            newFormCompany(IMAGEN.getAttribute("idLista"));
             break;
     }
 }
@@ -230,12 +230,20 @@ function deleteItem(element) {
             lista = "listaCompany";
             break;
     }
+    console.log(lista);
+    
 
     const ARRAY = JSON.parse(localStorage.getItem(lista));
-    ARRAY.splice(ARRAY.indexOf(element.parentElement.getElementsByTagName("img")[0].getAttribute('id')), 1);
+    console.log(ARRAY);
 
+
+    console.log(element.parentElement.getElementsByTagName("img")[0].getAttribute('idLista'));
+    ARRAY.splice(element.parentElement.getElementsByTagName("img")[0].getAttribute('idLista'), 1);
+
+    console.log(ARRAY);
     localStorage.setItem(lista, JSON.stringify(ARRAY));
     element.parentElement.innerHTML = "<td></td>";
+
 }
 
 function onLoging() {
@@ -267,8 +275,6 @@ function newFormPerson(id = -1) {
         const PERSONA = JSON.parse(localStorage.getItem("listaPersonas"))[id];
         newForm(PERSONA["nombre"], PERSONA["fechaNac"], PERSONA["fechaDef"], PERSONA["WikiPage"], PERSONA["imagePath"]);
     } else { newForm(); }
-
-
 
     document.getElementById("newItemForm").innerHTML += `<br><br><input type="button" name="Crear Persona" value="Guardar Persona" onclick="newPerson(${id})">`;
 
