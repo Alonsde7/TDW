@@ -91,13 +91,23 @@ img.rightimages {
 }
 
 [id="newItemForm"]>label,
-[id="newItemForm"] {
+[id="newItemForm"],
+ul,
+li {
 
     background-color: hsl(0, 0%, 60%);
     color: hsl(0, 0%, 0%);
     text-align: center;
 }
 
+li {
+    color: blue;
+}
+
 [id="newItemForm"] {
     margin-right: 15%;
+}
+
+input[value="X"] {
+    color: red;
 }
