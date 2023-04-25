@@ -1,8 +1,10 @@
 let personas = [];
 let companies = [];
 
-
-function onLoad(event) {
+/**
+ * Método que carga los usuraios x,y,z con sus respectivas contraseñas
+ */
+function onLoad() {
 
     localStorage.setItem("x", "x");
     localStorage.setItem("y", "y");
@@ -13,6 +15,9 @@ function onLoad(event) {
 
 }
 
+/**
+ * Crea los enlaces de todos los elementos de la tabla principal
+ */
 function addListenerOptions() {
 
     const TABLE = document.getElementById("mainTable");
@@ -28,12 +33,13 @@ function addListenerOptions() {
     }
 }
 
+/**
+ * Crea la página que se muestra cuándo un usuario hace click en la tabla
+ * @param {HTMLObject} imagen  Objeto HTML que puede ser la imagen o el texto dependiendo de donde a clickado el usuario
+ */
 function pagina(imagen) {
 
-    if (imagen.tagName == 'A') {
-
-        imagen = imagen.previousElementSibling;
-    }
+    if (imagen.tagName == 'A') { imagen = imagen.previousElementSibling; }
 
     let lista;
     switch (imagen.getAttribute('columna')) {
@@ -57,41 +63,41 @@ function pagina(imagen) {
     <!DOCTYPE html>
     <html lang="es">
 
-<head>
-    <title>Anales de la Ciencia - ${OBJECT["nombre"]}</title>
-    <meta charset="UTF-8">
-    <meta name="author" content="&Aacute;lvaro Alonso Devesa">
-    <meta name="keywords" content="Anales de la Ciencia, ${OBJECT["nombre"]}">
-    <link rel="stylesheet" type="text/css" href="style.css">
-    <script language="JavaScript" src="logic.js"></script>
-</head>
+    <head>
+        <title>Anales de la Ciencia - ${OBJECT["nombre"]}</title>
+        <meta charset="UTF-8">
+        <meta name="author" content="&Aacute;lvaro Alonso Devesa">
+        <meta name="keywords" content="Anales de la Ciencia, ${OBJECT["nombre"]}">
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <script language="JavaScript" src="logic.js"></script>
+    </head>
 
-<body>
-    <header>
-        <h1>Anales de la Ciencia</h1>
-    </header>
-    <nav>
-        <a href="index.html" title="index">INICIO</a>
-    </nav>
-    <main>
-        <section>
-            <h2>${OBJECT["nombre"]}</h2>
-            <article>
-                <p>
-                    ${OBJECT["fechaNac"]}
-                    <br>
-                    ${OBJECT["fechaDef"]}
-                </p>
-            </article>
-            <nav>
-                <img class="mainImage" src="${OBJECT["imagePath"]}" alt="${OBJECT["nombre"]}">
-            </nav>
-        </section>
-        <section>
-            <iframe src="${OBJECT["WikiPage"]}" name="${OBJECT["nombre"]}Frame"></iframe>
-        </section>
-    </main>
-    <footer>`;
+    <body>
+        <header>
+            <h1>Anales de la Ciencia</h1>
+        </header>
+        <nav>
+            <a href="index.html" title="index">INICIO</a>
+        </nav>
+        <main>
+            <section>
+                <h2>${OBJECT["nombre"]}</h2>
+                <article>
+                    <p>
+                        ${OBJECT["fechaNac"]}
+                        <br>
+                        ${OBJECT["fechaDef"]}
+                    </p>
+                </article>
+                <nav>
+                    <img class="mainImage" src="${OBJECT["imagePath"]}" alt="${OBJECT["nombre"]}">
+                </nav>
+            </section>
+            <section>
+                <iframe src="${OBJECT["WikiPage"]}" name="${OBJECT["nombre"]}Frame"></iframe>
+            </section>
+        </main>
+        <footer>`;
 
     (OBJECT["creadores"] ?? []).forEach(creador => {
 
@@ -137,6 +143,9 @@ function pagina(imagen) {
 
 }
 
+/**
+ * Crea las opciones para añadir, borrar y modificar elementos de la tabla
+ */
 function addWriterOptions() {
 
     const TABLE = document.getElementById("mainTable");
@@ -164,6 +173,9 @@ function addWriterOptions() {
 
 }
 
+/**
+ * Muestra la tabla de elemtos
+ */
 function mostrarElementos() {
 
     const ARRAYPRODUCTOS = JSON.parse(localStorage.getItem("listaProductos")) ?? [];
@@ -193,6 +205,10 @@ function mostrarElementos() {
     }
 }
 
+/**
+ * Crea el formulario teniendo en cuenta el id
+ * @param {HTMLObject} element Botón que se ha pulsado
+ */
 function editItem(element) {
     const IMAGEN = element.parentElement.firstChild;
 
@@ -211,7 +227,10 @@ function editItem(element) {
             break;
     }
 }
-
+/**
+ * Elimina de la tabla y de la memoria un elemento
+ * @param {HTMLObject} element Botón que se ha pulsado
+ */
 function deleteItem(element) {
 
     let lista;
@@ -230,22 +249,19 @@ function deleteItem(element) {
             lista = "listaCompany";
             break;
     }
-    console.log(lista);
-    
 
     const ARRAY = JSON.parse(localStorage.getItem(lista));
-    console.log(ARRAY);
 
-
-    console.log(element.parentElement.getElementsByTagName("img")[0].getAttribute('idLista'));
     ARRAY.splice(element.parentElement.getElementsByTagName("img")[0].getAttribute('idLista'), 1);
 
-    console.log(ARRAY);
     localStorage.setItem(lista, JSON.stringify(ARRAY));
     element.parentElement.innerHTML = "<td></td>";
 
 }
 
+/**
+ * Funcion que se ejecuta cunado pulsa el botón de login
+ */
 function onLoging() {
 
     if (localStorage.getItem(document.getElementById("user_form").value) == document.getElementById("password_form").value) {
@@ -257,6 +273,16 @@ function onLoging() {
     }
 }
 
+/**
+ * Crea el formulario común, tanto para editar como para modificar
+ * 
+ * @param {String} name Nombre del producto a modificar en caso de que tenga, si no tiene es "" por defecto.
+ * @param {Date} bornDate Fecha de nacimiento del producto a modificar en caso de que tenga, si no tiene es "" por defecto.
+ * @param {Date} deathDate Fecha de fallecimiento del producto a modificar en caso de que tenga, si no tiene es "" por defecto.
+ * @param {Date} wikiPage Página de la wikipedia del producto a modificar en caso de que tenga, si no tiene es "" por defecto.
+ * @param {String} imagen Camino o enlace a la página del producto a modificar en caso de que tenga, si no tiene es "" por defecto.
+ * 
+ */
 function newForm(name = "", bornDate = "", deathDate = "", wikiPage = "", imagen = "") {
 
     const FORM = document.getElementById("newItemForm");
@@ -269,6 +295,11 @@ function newForm(name = "", bornDate = "", deathDate = "", wikiPage = "", imagen
 
 }
 
+/**
+ * Crea el formulario específico para la persona
+ * 
+ * @param {int} id En caso de que sea -1 (o no tenga ningún valor), el programa crea una nueva persona, en caso contrario la modifica.
+ */
 function newFormPerson(id = -1) {
 
     if (id != -1) {
@@ -280,6 +311,11 @@ function newFormPerson(id = -1) {
 
 }
 
+/** 
+ * Crea el formulario específico para la compañia
+ * 
+ * @param {int} id En caso de que sea -1 (o no tenga ningún valor), el programa crea una nueva compañia, en caso contrario la modifica.
+ */
 function newFormCompany(id = -1) {
 
     const FORM = document.getElementById("newItemForm");
@@ -299,6 +335,11 @@ function newFormCompany(id = -1) {
     }
 }
 
+/**
+ * Crea el formulario específico para el producto
+ * 
+ * @param {int} id En caso de que sea -1 (o no tenga ningún valor), el programa crea un nuevo producto, en caso contrario la modifica.
+ */
 function newFormProduct(id = -1) {
 
     if (id != -1) {
@@ -326,6 +367,11 @@ function newFormProduct(id = -1) {
 
 }
 
+/**
+ * Guarda la persona en local Storage
+ * 
+ * @param {int} id En caso de que sea -1 (o no tenga ningún valor), el programa crea una nueva persona, en caso contrario la modifica.
+ */
 function newPerson(id = -1) {
 
     const PERSONA = {
@@ -349,6 +395,11 @@ function newPerson(id = -1) {
 
 }
 
+/**
+ * Guarda el producto en local Storage
+ * 
+ * @param {int} id En caso de que sea -1 (o no tenga ningún valor), el programa crea un nuevo producto, en caso contrario lo modifica.
+ */
 function newProduct(id = -1) {
 
     const PRODUCT = {
@@ -378,6 +429,11 @@ function newProduct(id = -1) {
 
 }
 
+/**
+ * Guarda la empresa en local Storage
+ * 
+ * @param {int} id En caso de que sea -1 (o no tenga ningún valor), el programa crea una nueva empresa, en caso contrario lo modifica.
+ */
 function newCompany(id = -1) {
 
     const COMPANY = {
@@ -404,6 +460,12 @@ function newCompany(id = -1) {
 
 }
 
+/**
+ * Añade a la lista indicada, el elemento escrito en el input
+ * 
+ * @param {int} list 0:lista personas
+                     1:listas compañias
+ */
 function addToList(list) {
 
     (list == 0 ? personas : companies).push(document.getElementById(list == 0 ? "Addpersonas" : "AddCompany").value);
@@ -417,6 +479,12 @@ function addToList(list) {
 
 }
 
+/**
+ * Añade un array completo a la lista undicado por list
+ * 
+ * @param {int} list 0:lista personas
+                     1:listas compañias
+ */
 function arrayToList(list) {
 
     //0:lista personas
@@ -433,6 +501,12 @@ function arrayToList(list) {
     });
 }
 
+/**
+ * Elimina tanto de la lista como del array correspondiente un elemento
+ * 
+ * @param {String} element Nombre del elemento a eliminar
+ * @param {int} list Lista de la que vamos a eliminar
+ */
 function deleteFromList(element, list) {
 
     (list == 0 ? personas : companies).splice((list == 0 ? personas : companies).indexOf(element.parentElement.getAttribute("value")), 1);
