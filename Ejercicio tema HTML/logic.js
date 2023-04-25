@@ -358,7 +358,7 @@ function newFormProduct(id = -1) {
     FORM.innerHTML += "<br><label for=\"AddCompany\">Nombre de la compañia: </label><input id=\"AddCompany\" type=\"text\" name=\"AddCompany\"/>";
     FORM.innerHTML += "<input type=\"button\" name=\"Add Compañia\" value=\"Añadir\" onclick=\"addToList(1)\"><br> <ul></ul><br>";
 
-    FORM.innerHTML += `<input type="button" name="crear Producto" value="Guradar Producto" onclick="newProduct(${id})">`;
+    FORM.innerHTML += `<input type="button" name="crear Producto" value="Guardar Producto" onclick="newProduct(${id})">`;
 
     if (id != -1) {
         arrayToList(0);
