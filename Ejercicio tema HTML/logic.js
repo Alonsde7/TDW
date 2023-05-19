@@ -264,6 +264,23 @@ function deleteItem(element) {
  */
 function onLoging() {
 
+    let authHeader = null;
+        $.post(
+            "/access_token",
+            $("logging_form").serialize(),
+            null
+        ).success(function (data, textStatus, request) {
+            // => show scopes, users, products, ...
+            authHeader = request.getResponseHeader('Authorization');
+            console.log(authHeader);
+            //console.log(data)
+        }).fail(function (xhr) {
+            if (xhr.responseJSON && xhr.responseJSON.error_description) {
+                message = xhr.responseJSON.error_description;
+                alert("Incorrecto :( \n" + message)
+            }
+        });
+
     if (localStorage.getItem(document.getElementById("user_form").value) == document.getElementById("password_form").value) {
 
         const FORMULARIO = document.getElementById("logging_form");
